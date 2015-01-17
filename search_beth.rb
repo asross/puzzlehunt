@@ -4,7 +4,7 @@ require 'set'
 
 graph = {}
 
-rows = CSV.parse(File.read('./bethdata3.csv'), headers: true)
+rows = CSV.parse(File.read('./bethdata4.csv'), headers: true)
 
 rows.each do |row|
   graph[row['Page #']] = row['Possible Doors'].split(',')
@@ -41,26 +41,11 @@ s = ''
   if next_room = @path[i+1]
     doors = row_hash[this_room][2].split(',')
     index = doors.index(next_room)
-    s += row_hash[this_room][5].to_s[index+1] || '_'
+    s += row_hash[this_room][5].to_s[index] || '_'
   end
 end
 
-ss = ''
-rows.each do |row|
-  next_room = @path[@path.index(row[0])+1]
-  doors = row[2].split(',')
-  index = doors.index(next_room)
-  ss += row[5].to_s[index+1] || '_'
-end
-binding.pry
+puts s
 
-
-
-
-rs = rows.to_a[1..-1]
-
-rs = rs.sort_by{|row| @path.index(row[0]) }
-
-rrs = rs.map{|row| [row[2].split(',').count, row[5].to_s] }
 
 binding.pry
