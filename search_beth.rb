@@ -4,7 +4,7 @@ require 'set'
 
 graph = {}
 
-rows = CSV.parse(File.read('./bethdata.csv'), headers: true)
+rows = CSV.parse(File.read('./bethdata3.csv'), headers: true)
 
 rows.each do |row|
   graph[row['Page #']] = row['Possible Doors'].split(',')
@@ -30,5 +30,37 @@ while state = frontier.pop
 end
 
 # ["1", "11", "4", "3", "8", "6", "17", "19", "15", "12", "23", "10", "16", "5", "2", "9", "18", "20", "21", "22", "13", "14", "7", "24"]
+rows = rows.to_a[1..-1]
+
+row_hash = rows.each_with_object({}) do |row, h|
+  h[row[0]] = row
+end
+
+s = ''
+@path.each_with_index do |this_room, i|
+  if next_room = @path[i+1]
+    doors = row_hash[this_room][2].split(',')
+    index = doors.index(next_room)
+    s += row_hash[this_room][5].to_s[index+1] || '_'
+  end
+end
+
+ss = ''
+rows.each do |row|
+  next_room = @path[@path.index(row[0])+1]
+  doors = row[2].split(',')
+  index = doors.index(next_room)
+  ss += row[5].to_s[index+1] || '_'
+end
+binding.pry
+
+
+
+
+rs = rows.to_a[1..-1]
+
+rs = rs.sort_by{|row| @path.index(row[0]) }
+
+rrs = rs.map{|row| [row[2].split(',').count, row[5].to_s] }
 
 binding.pry
