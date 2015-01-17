@@ -57,9 +57,16 @@ bintotal = ''.join(bincode)
 bintotal_list = bintotal.split()
 big_total = "".join(bintotal_list)
 
-trans_list = []
-for i in range(0,len(big_total),8):
-    trans_list.append(big_total[i:i+8])
+utf8_list = []
+ascii_list = []
+reverse_utf8_list = []
+reverse_ascii_list = []
 
-for i in trans_list:
-    print chr(int(i[:5]))
+for i in range(0,len(big_total),8):
+    eight_bit_chunk = big_total[i:i+8]
+    ascii_list.append(unichr(int(eight_bit_chunk, 2)))
+    reverse_ascii_list.append(unichr(int(benot(eight_bit_chunk), 2)))
+
+
+print ''.join(ascii_list)
+print ''.join(reverse_ascii_list)
